@@ -2,10 +2,10 @@ cache:
   directories:
     - docker_images
 
-before_install:
+before_script:
   - docker load -i docker_images/images.tar || true
 
-before_cache:
+after_script:
   - docker save -o docker_images/images.tar $(docker images -a -q)
 
 jobs:
