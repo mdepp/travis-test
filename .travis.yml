@@ -6,7 +6,7 @@ before_script:
   - docker load -i docker_images/images.tar || true
 
 after_script:
-  - docker save -o docker_images/images.tar $(docker images -a -q)
+  - docker save -o docker_images/images.tar image
 
 jobs:
   include:
