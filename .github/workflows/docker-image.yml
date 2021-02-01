@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag image
+    - name: Save the docker image
+      run: docker save -o docker_images/images.tar image
+    - name: Upload the docker image
+      uses: actions/upload-artifact@v2
+      with:
+        name: docker_images
+        path: docker_images/images.tar
+  use_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download docker image
+        uses: actions/download-artifact@v2
+        with:
+          name: docker_images
+      - name: Use the docker image for something
+        run: docker run image
