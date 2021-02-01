@@ -1,0 +1,9 @@
+jobs:
+  include:
+    - stage: build docker image
+      script: docker build -t image .
+    - stage: test image
+      script: docker run image
+
+notifications:
+  email: false
