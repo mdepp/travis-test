@@ -14,12 +14,12 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag image
     - name: Save the docker image
-      run: docker save -o docker_images/images.tar image
+      run: docker save -o images.tar image
     - name: Upload the docker image
       uses: actions/upload-artifact@v2
       with:
         name: docker_images
-        path: docker_images/images.tar
+        path: images.tar
   use_image:
     needs: build_image
     runs-on: ubuntu-latest
@@ -29,6 +29,6 @@ jobs:
         with:
           name: docker_images
       - name: Load the docker image
-        run: docker load -i docker_images/images.tar
+        run: docker load -i images.tar
       - name: Use the docker image for something
         run: docker run image
