@@ -5,7 +5,7 @@ cache:
 before_script:
   - docker load -i docker_images/images.tar || true
 
-after_script:
+before_cache:
   - docker save -o docker_images/images.tar image
 
 jobs:
