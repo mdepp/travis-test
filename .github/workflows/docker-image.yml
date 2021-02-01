@@ -28,5 +28,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: docker_images
+      - name: Load the docker image
+        run: docker load -i docker_images/images.tar
       - name: Use the docker image for something
         run: docker run image
