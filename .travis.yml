@@ -3,15 +3,15 @@ jobs:
     - stage: build docker image
       script:
         - docker build -t image .
-        - docker save -o docker_images/images.tar image
+        - docker save -o images.tar image
       workspaces:
         create:
           name: docker_cache
           paths:
-            docker_images/images.tar
+            images.tar
     - stage: test image
       script:
-        - docker load -i docker_images/images.tar
+        - docker load -i images.tar
         - docker run image
       workspaces:
         use: docker_cache
