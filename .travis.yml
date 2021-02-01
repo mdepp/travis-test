@@ -1,19 +1,20 @@
-cache:
-  directories:
-    - docker_images
-
-before_script:
-  - docker load -i docker_images/images.tar || true
-
-before_cache:
-  - docker save -o docker_images/images.tar image
-
 jobs:
   include:
     - stage: build docker image
-      script: docker build -t image .
+      script:
+        - docker build -t image .
+        - docker save -o docker_images/images.tar image
+      workspaces:
+        create:
+          name: docker_cache
+          paths:
+            docker_images/images.tar
     - stage: test image
-      script: docker run image
+      script:
+        - docker load -i docker_images/images.tar
+        - docker run image
+      workspaces:
+        use: docker_cache
 
 notifications:
   email: false
